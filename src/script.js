@@ -1,6 +1,4 @@
-const inputBox = document.querySelector('#textInput');
 const visualizer = document.querySelector('#visualizer');
-inputBox.focus();
 
 let previousInput = '';
 let currentInput = '';
@@ -29,12 +27,13 @@ const test = [
   "reverie", "sonnet", "talisman", "utmost", "verve", "wistful", "xylophonist", "yesteryear", "zen"
 ];
 
-inputBox.addEventListener('keydown', (event) => {
+document.addEventListener('keydown', (event) => {
     let activeWord = document.querySelector('.active');
     const key = event.key;
     if (event.code === `Key${key.toUpperCase()}`) letterPress(key, activeWord); 
     else if (key === 'Backspace') backspacePress(activeWord);
     else if (key === ' ') spacePress(activeWord);
+    console.log(key);
 });
 
 occupyVisuals(test);
