@@ -30,6 +30,7 @@ const test = [
 ];
 
 inputBox.addEventListener('keydown', (event) => {
+    console.log(event.key);
     let activeWord = document.querySelector('.active');
     const firstLetter = activeWord.childNodes[0];
     if (event.key !== 'Backspace') return;
@@ -45,7 +46,6 @@ inputBox.addEventListener('keydown', (event) => {
     activeWord.classList.toggle('error');
     inputBox.value = previousInput + ' ';
     letterIndex = previousInput.length;
-    console.log(previousInput + '|');
 });
 
 inputBox.addEventListener('input', () => {
@@ -65,8 +65,6 @@ inputBox.addEventListener('input', () => {
      *  (1) add incorrect or correct tag to current visual letter 
     */
     if (letterIndex > inputBox.value.length) {
-        console.log('backspace');
-        console.log('index: ' + letterIndex);
         const deletedLetter = currentWord.childNodes[inputBox.value.length];                          
         if (deletedLetter.classList.contains('correct')) deletedLetter.classList.toggle('correct');   
         else deletedLetter.classList.toggle('incorrect');                                             
@@ -75,8 +73,6 @@ inputBox.addEventListener('input', () => {
         /* - space at the end 
          * - space in the middle of a word
         */
-        console.log('space');
-        console.log('index: ' + letterIndex);
         if (letterIndex === currentWord.childNodes.length) {
             currentWord.nextSibling.classList.toggle('active');
             if (currentWord.textContent !== inputBox.value.substring(0, inputBox.value.length - 1)) 
@@ -91,8 +87,6 @@ inputBox.addEventListener('input', () => {
             letterIndex++;
         }
     } else { 
-        console.log('letter');
-        console.log('index: ' + letterIndex);
         if (letterIndex >= currentWord.textContent.length) return;
         const typedLetter = currentWord.childNodes[letterIndex];
         if (latestLetter === currentWord.textContent.substring(letterIndex, letterIndex + 1)) { 
