@@ -68,7 +68,10 @@ function backspacePress(activeWord) {
     else if (activeWord.firstChild === currentLetterNode(activeWord)) {
         // swap active and typed classes of previous and active 
         const previousWord = activeWord.previousSibling;
-        if (previousWord) { 
+        const error = Array.from(previousWord.childNodes).some((letter) => {
+            return letter.classList.contains('incorrect') || letter.classList.contains('extra');
+        });
+        if (previousWord && error) { 
             activeWord.classList.toggle('active');
             previousWord.classList.toggle('active'); 
             previousWord.classList.toggle('typed');
