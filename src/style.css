@@ -102,13 +102,13 @@ footer {
 }
 
 /* active word that the cursor is in */
-.active { border: 1px solid var(--faded-white); }
+.active { } 
 
 /* typed word that cursor already passed whether correct or wrong */
-.typed { border: 1px solid var(--purple-accent); }
+.typed { } 
 
 /* typed word that has an error */
-.error { border: 1px solid red; }
+.error { }
 
 /* correct letter inside word */
 .correct {
