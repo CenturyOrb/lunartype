@@ -2,8 +2,8 @@ const inputBox = document.querySelector('#textInput');
 const visualizer = document.querySelector('#visualizer');
 inputBox.focus();
 
-let letterIndex = 0; // the next letter that the user needs to type
 let previousInput = '';
+let currentInput = '';
 
 const test = [
   "both", "banana", "cherry", "dog", "elephant", "flower", "guitar", "happy", "ice", "jungle",
@@ -30,79 +30,91 @@ const test = [
 ];
 
 inputBox.addEventListener('keydown', (event) => {
-    console.log(event.key);
     let activeWord = document.querySelector('.active');
-    const firstLetter = activeWord.childNodes[0];
-    if (event.key !== 'Backspace') return;
-    if (letterIndex !== 0) return;
-    if (!activeWord.previousSibling) return;
-    if (!activeWord.previousSibling.classList.contains('error')) return;
-    // go to previous IF the previous is incorrect
-    activeWord.classList.toggle('active');
-    activeWord.classList.toggle('typed');
-    activeWord = activeWord.previousSibling;
-    activeWord.classList.toggle('active');
-    activeWord.classList.toggle('typed');
-    activeWord.classList.toggle('error');
-    inputBox.value = previousInput + ' ';
-    letterIndex = previousInput.length;
-});
-
-inputBox.addEventListener('input', () => {
-    const latestLetter = inputBox.value.substring(inputBox.value.length - 1);
-    const currentWord = document.querySelector('.active');    
-    /*
-     * if a user enters in a backspace
-     *  (1) remove incorrect or correct tag 
-     *  (2) update letterIndex
-     *
-     * if a user enters in a space 
-     *  (1) reset inputBox visuals
-     *  (2) letterIndex resets
-     *  (3) store previous input 
-     * 
-     * if the user enters in a letter
-     *  (1) add incorrect or correct tag to current visual letter 
-    */
-    if (letterIndex > inputBox.value.length) {
-        const deletedLetter = currentWord.childNodes[inputBox.value.length];                          
-        if (deletedLetter.classList.contains('correct')) deletedLetter.classList.toggle('correct');   
-        else deletedLetter.classList.toggle('incorrect');                                             
-        letterIndex--;                                                                                
-    } else if (latestLetter === ' ') {
-        /* - space at the end 
-         * - space in the middle of a word
-        */
-        if (letterIndex === currentWord.childNodes.length) {
-            currentWord.nextSibling.classList.toggle('active');
-            if (currentWord.textContent !== inputBox.value.substring(0, inputBox.value.length - 1)) 
-                currentWord.classList.toggle('error'); 
-            currentWord.classList.toggle('active');
-            currentWord.classList.toggle('typed');
-            previousInput = inputBox.value.slice(0, -1);
-            inputBox.value = '';   
-            letterIndex = 0;       
-        } else { 
-            currentWord.childNodes[letterIndex].classList.add('incorrect');
-            letterIndex++;
-        }
-    } else { 
-        if (letterIndex >= currentWord.textContent.length) return;
-        const typedLetter = currentWord.childNodes[letterIndex];
-        if (latestLetter === currentWord.textContent.substring(letterIndex, letterIndex + 1)) { 
-            typedLetter.classList.toggle('correct');
-        } else {
-            typedLetter.classList.toggle('incorrect');
-        }
-        letterIndex++;
-    }
-});
-
-inputBox.addEventListener('click', () => {
-    if (inputBox.placeholder != null) inputBox.placeholder = '';
+    const key = event.key;
+    if (event.code === `Key${key.toUpperCase()}`) letterPress(key, activeWord); 
+    else if (key === 'Backspace') backspacePress(activeWord);
+    else if (key === ' ') spacePress(activeWord);
 });
 
 occupyVisuals(test);
+
+function letterPress(key, activeWord) { 
+    const currentLetter = currentLetterNode(activeWord);
+    
+    // user enters in extra characters
+    if (!currentLetter) { 
+        const letterdiv = document.createElement('div'); 
+        letterdiv.textContent = key;                    
+        letterdiv.classList.add('letter');               
+        letterdiv.classList.add('extra');
+        activeWord.appendChild(letterdiv);                  
+    }
+    // user enters in correct or wrong character
+    else if (currentLetter.textContent === key) 
+        currentLetter.classList.toggle('correct');
+    else currentLetter.classList.toggle('incorrect');
+    currentInput += key;
+}
+
+function backspacePress(activeWord) {
+    previousLetter = currentLetterNode(activeWord).previousSibling;
+    if (activeWord.lastChild.classList.contains('extra')) activeWord.lastChild.remove(); // if there are extra letters
+    else if (!currentLetterNode(activeWord)) { // if it's the last letter 
+        if (activeWord.lastChild.classList.contains('correct')) 
+            activeWord.lastChild.classList.toggle('correct');
+        else activeWord.lastChild.classList.toggle('incorrect');
+    }
+    else if (activeWord.firstChild === currentLetterNode(activeWord)) {
+        // swap active and typed classes of previous and active 
+        const previousWord = activeWord.previousSibling;
+        if (previousWord) { 
+            activeWord.classList.toggle('active');
+            previousWord.classList.toggle('active'); 
+            previousWord.classList.toggle('typed');
+        }
+    }
+    else { // if inside the word 
+        toggleCorrect(previousLetter);
+    }
+    currentInput = currentInput.slice(0, -1);
+}
+
+function spacePress(activeWord) { 
+    if (!currentLetterNode(activeWord)) { 
+        // add functoinality to move on to next word
+        // save previous full input
+        const error = Array.from(activeWord.childNodes).some((letter) => {
+            return letter.classList.contains('incorrect') || letter.classList.contains('extra')
+        });
+        if (error) activeWord.classList.toggle('error')
+        activeWord.classList.toggle('active');
+        activeWord.classList.toggle('typed');
+        activeWord = activeWord.nextSibling;
+        activeWord.classList.toggle('active');
+        previousInput = currentInput;
+        currentInput = '';
+    } else { 
+        currentLetterNode(activeWord).classList.toggle('incorrect'); 
+        currentInput += ' ';
+    }
+}
+
+// returns first letter that hasn't been valued 
+// if the whole word has been valued or overflowed, return false
+function currentLetterNode(activeWord) { 
+    const letters = activeWord.childNodes;
+    for (let i = 0; i < letters.length; i++) {
+        if (letters[i].classList.length === 1) return letters[i]; 
+    }
+    return false;
+}
+
+function toggleCorrect(letter) { 
+    if (letter.classList.contains('correct'))
+        letter.classList.toggle('correct');
+    else letter.classList.toggle('incorrect');
+}
 
 function occupyVisuals(words) {
     let word;
@@ -116,7 +128,6 @@ function displayWord(word, id) {
     let chars = word.split('');
     const worddiv = document.createElement('div');   
     worddiv.classList.add('word');                   
-    worddiv.id = 'word-' + id;
     if (id === 0) worddiv.classList.toggle('active');
 
     chars.forEach(char => { 

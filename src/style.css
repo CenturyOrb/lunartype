@@ -5,6 +5,7 @@
     --purple-accent: #cf6bdd;
     --faded-white: #eedaea;
     --incorrect-letter : rgb(255, 82, 83);
+    --extra-letter: rgb(227, 0, 43);
 }
 
 .purple-accent { 
@@ -76,18 +77,13 @@ footer {
     height: 2rem;
     text-align: center;
     border: none; 
-    color: var(--purple-accent);
+    color: var(--dark-purple);
     font-size: 2rem;
     background-color: var(--dark-purple);
 }
 
 #textInput:focus {
     outline: inherit;
-}
-
-#textInput::placeholder { 
-    color: inherit;
-    opacity: 0.7;
 }
 
 .letter {
@@ -106,10 +102,10 @@ footer {
 }
 
 /* active word that the cursor is in */
-.active { border: 1px solid gold; }
+.active { border: 1px solid var(--faded-white); }
 
 /* typed word that cursor already passed whether correct or wrong */
-.typed { }
+.typed { border: 1px solid var(--purple-accent); }
 
 /* typed word that has an error */
 .error { border: 1px solid red; }
@@ -122,4 +118,8 @@ footer {
 /* incorrect letter inside word */
 .incorrect { 
     color: var(--incorrect-letter);
+}
+
+.extra { 
+    color: var(--extra-letter);
 }
