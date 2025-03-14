@@ -64,7 +64,12 @@ main {
 #visualizer { 
     width: 82%;
     height: 32%;
-    overflow: visible clip;
+    overflow: visible auto;
+    scroll-behavior: smooth;
+}
+
+#visualizer::-webkit-scrollbar {
+    display: none;
 }
 
 footer { 

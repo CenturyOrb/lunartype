@@ -1,5 +1,6 @@
 const visualizer = document.querySelector('#visualizer');
 
+let previousRow = -1;
 let previousInput = '';
 let currentInput = '';
 
@@ -27,13 +28,14 @@ const test = [
   "reverie", "sonnet", "talisman", "utmost", "verve", "wistful", "xylophonist", "yesteryear", "zen"
 ];
 
+// add detected to finishing the last word of the second line
+// this should be done on the spacePress function
 document.addEventListener('keydown', (event) => {
     let activeWord = document.querySelector('.active');
     const key = event.key;
     if (event.code === `Key${key.toUpperCase()}`) letterPress(key, activeWord); 
     else if (key === 'Backspace') backspacePress(activeWord);
     else if (key === ' ') spacePress(activeWord);
-    console.log(key);
 });
 
 occupyVisuals(test);
@@ -89,6 +91,15 @@ function spacePress(activeWord) {
         const error = Array.from(activeWord.childNodes).some((letter) => {
             return letter.classList.contains('incorrect') || letter.classList.contains('extra')
         });
+        const nextWordRect = activeWord.nextSibling.getBoundingClientRect();
+        const activeWordRect = activeWord.getBoundingClientRect();
+        if (nextWordRect.top > activeWordRect.top) {
+            previousRow++;
+            console.log(previousRow);
+            if (previousRow >= 1) {
+                visualizer.scrollTo(0, previousRow * activeWord.clientHeight);       
+            }
+        }
         if (error) activeWord.classList.toggle('error')
         activeWord.classList.toggle('active');
         activeWord.classList.toggle('typed');
@@ -140,4 +151,3 @@ function displayWord(word, id) {
         visualizer.appendChild(worddiv);
     });
 }
-
