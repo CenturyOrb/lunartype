@@ -128,3 +128,14 @@ footer {
 .extra { 
     color: var(--extra-letter);
 }
+
+#results { 
+    width: 70%;
+    height: auto;
+    font-size: 4rem;
+    font-family: 'Source Code Pro';
+}
+
+.display-none { 
+    display: none;
+}

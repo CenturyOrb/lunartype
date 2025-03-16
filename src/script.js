@@ -1,8 +1,11 @@
 const visualizer = document.querySelector('#visualizer');
 
+let time = null;
 let previousRow = -1;
 let previousInput = '';
 let currentInput = '';
+const main = document.querySelector('main');
+const results = document.querySelector('#results');
 
 const test = [
   "both", "banana", "cherry", "dog", "elephant", "flower", "guitar", "happy", "ice", "jungle",
@@ -31,6 +34,8 @@ const test = [
 // add detected to finishing the last word of the second line
 // this should be done on the spacePress function
 document.addEventListener('keydown', (event) => {
+
+    if (!time) startTimer()// start timer for 30 seconds
     let activeWord = document.querySelector('.active');
     const key = event.key;
     if (event.code === `Key${key.toUpperCase()}`) letterPress(key, activeWord); 
@@ -95,7 +100,6 @@ function spacePress(activeWord) {
         const activeWordRect = activeWord.getBoundingClientRect();
         if (nextWordRect.top > activeWordRect.top) {
             previousRow++;
-            console.log(previousRow);
             if (previousRow >= 1) {
                 visualizer.scrollTo(0, previousRow * activeWord.clientHeight);       
             }
@@ -150,4 +154,38 @@ function displayWord(word, id) {
         worddiv.appendChild(letterdiv);
         visualizer.appendChild(worddiv);
     });
+}
+
+function startTimer() { 
+    time = (new Date()).getMilliseconds() + 30000;
+    window.setTimeout(timeOut, time); 
+}
+
+const timeOut = function() { 
+    // count the amount of correct words in visualizer
+    console.log('timeOut()');
+    const words = visualizer.childNodes;
+    const wpm = Array.from(words).filter(isCorrect).length; 
+    visualizer.classList.toggle('display-none');
+    results.classList.toggle('display-none');
+    wpmDisplay('hai jass bewger!', wpm, results);
+}
+
+const isCorrect = function(word) {
+    return word.classList.contains('typed') && !word.classList.contains('error') && !word.classList.contains('active'); 
+}
+
+function wpmDisplay(text, wpm, textNode) {
+    const letterInterval = 4 * wpm;
+    let chars = text.split('');  
+    inter(chars, 0.25, results);
+}
+
+function inter(chars, interval, textNode) { 
+    const char = chars.shift();
+    if (typeof char !== 'undefined') { 
+        textNode.textContent += char;
+        setTimeout(() => inter(chars, interval, textNode), interval * 1000);
+    } else console.log('done');
+    
 }
