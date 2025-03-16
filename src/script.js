@@ -168,7 +168,7 @@ const timeOut = function() {
     const wpm = Array.from(words).filter(isCorrect).length; 
     visualizer.classList.toggle('display-none');
     results.classList.toggle('display-none');
-    wpmDisplay('i wanna get rich' wpm, results);
+    wpmDisplay('i wanna get rich', wpm, results);
 }
 
 const isCorrect = function(word) {
