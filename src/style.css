@@ -1,0 +1,155 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap');
+
+:root {
+    --dark-purple: #101820; 
+    --purple-accent: #cf6bdd;
+    --faded-white: #eedaea;
+    --incorrect-letter : rgb(255, 82, 83);
+    --extra-letter: rgb(227, 0, 43);
+}
+
+.purple-accent { 
+    color: var(--purple-accent);
+}
+
+body {
+    margin: 0;
+    height: 100vh;
+    background-color: var(--dark-purple);
+    color: var(--faded-white);
+    font-family: "Lexend Deca", sans-serif;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-left: 9vw;
+    margin-right: 9vw;
+    height: 14vh;
+}
+
+header > nav {
+    display: flex;
+    align-items: center;
+}
+
+header > nav:nth-of-type(1) { 
+    gap: 0.5rem;
+}
+
+header > nav:nth-of-type(2) {
+    gap: 1rem;
+}
+
+#name { 
+    font-size: 36px;
+    text-decoration: none;
+}
+
+#name:visited { 
+    color: var(--faded-white);
+}
+
+main { 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    height: 72vh;
+}
+
+#visualizer { 
+    width: 82%;
+    height: 32%;
+    overflow: visible auto;
+    scroll-behavior: smooth;
+}
+
+#visualizer::-webkit-scrollbar {
+    display: none;
+}
+
+footer { 
+    height: 13vh;
+    display: flex;
+    justify-content: center;
+}
+
+#textInput { 
+    height: 2rem;
+    text-align: center;
+    border: none; 
+    color: var(--dark-purple);
+    font-size: 2rem;
+    background-color: var(--dark-purple);
+}
+
+#textInput:focus {
+    outline: inherit;
+}
+
+.letter {
+    font-family: 'Source Code Pro';
+    display: inline-block;
+    font-size: 1.5rem;
+    color: var(--purple-accent); 
+    text-align: center;
+}
+
+.word {
+    display: inline-block;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    line-height: 2.7rem;
+}
+
+/* active word that the cursor is in */
+.active { } 
+
+/* typed word that cursor already passed whether correct or wrong */
+.typed { } 
+
+/* typed word that has an error */
+.error { }
+
+/* correct letter inside word */
+.correct {
+    color: var(--faded-white);
+}
+
+/* incorrect letter inside word */
+.incorrect { 
+    color: var(--incorrect-letter);
+}
+
+/* extra letter insideword */
+.extra { 
+    color: var(--extra-letter);
+}
+
+#results { 
+    justify-content: space-between;
+    width: 70%;
+    height: auto;
+    font-size: 4rem;
+    font-family: 'Source Code Pro';
+}
+
+#results::child(1) { 
+    border: 1px solid gold;
+}
+
+#results::child(2) {         
+    border: 1px solid whitesmoke;  
+}                            
+
+.display-none { 
+    display: none;
+}
+
+.display-flex { 
+    display: flex;
+}

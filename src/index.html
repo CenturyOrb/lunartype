@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="style.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/40e7f3c809.js" crossorigin="anonymous"></script>
+    <script src="script.js" defer></script>
+    <link rel="icon" href="../assets/keyboard-solid.svg">
+    <title>lunartype</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <i class="fa-solid fa-keyboard fa-2xl"></i>
+            <!-- not sure where this should take the user -->
+            <a id="name" href="index.html">lunartype</a>
+        </nav>
+        <nav>
+            <!-- should take user to credits page -->
+            <a><i class="fa-solid fa-circle-info fa-lg purple-accent"></i></a>
+            <!-- should take the user to settings -->
+            <a><i class="fa-solid fa-gear fa-lg purple-accent"></i></a>
+        </nav>
+    </header>
+    <main>
+        <div id="visualizer"></div>
+        <input id='textInput' type='text' class="display-none" size="10" spellcheck="false">
+        <div id="results" class="display-none" >
+            <p></p>
+            <p></p>
+        </div> 
+    </main>
+    <footer>
+        <p>v0.1.2-indev user:CenturyOrb</p>
+    </footer>
+</body>
+</html>
