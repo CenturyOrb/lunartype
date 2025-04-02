@@ -1,33 +1,11 @@
+const url = 'https://random-word-api.vercel.app/api?words=100&length=';  
 const visualizer = document.querySelector('#visualizer');
-
 let time = null;
 let previousRow = -1;
 const main = document.querySelector('main');
 const results = document.querySelector('#results');
 
-const test = [
-  "both", "banana", "cherry", "dog", "elephant", "flower", "guitar", "happy", "ice", "jungle",
-  "kangaroo", "lemon", "mountain", "notebook", "ocean", "pencil", "queen", "rainbow", "sun", "tiger",
-  "umbrella", "violin", "whale", "xylophone", "yogurt", "zebra", "airplane", "butterfly", "candle",
-  "dragon", "engine", "forest", "giraffe", "horizon", "island", "jacket", "kitchen", "lantern",
-  "magnet", "night", "octopus", "pyramid", "quartz", "robot", "satellite", "tornado", "universe",
-  "volcano", "wizard", "xenon", "yawn", "zeppelin", "anchor", "bubble", "cactus", "diamond",
-  "explore", "feather", "glacier", "harmony", "insect", "jigsaw", "kingdom", "lighthouse",
-  "mystery", "nebula", "orchestra", "parrot", "quiver", "rocket", "symphony", "treasure", "utopia",
-  "vortex", "whisper", "xylitol", "yonder", "zeppelin", "avocado", "balloon", "crystal", "dolphin",
-  "emerald", "firefly", "goblin", "hurricane", "illusion", "journey", "koala", "labyrinth", "meadow",
-  "nectar", "onyx", "penguin", "quasar", "radiant", "safari", "twilight", "umbrella", "velocity",
-  "whimsical", "xenophile", "yogurt", "zeppelin", "alchemy", "breeze", "cascade", "delight",
-  "enigma", "fortune", "graceful", "horizon", "infinity", "jubilant", "kaleidoscope", "lunar",
-  "miracle", "nirvana", "opulence", "phenomenon", "quirky", "resonance", "serendipity", "tranquil",
-  "unravel", "vivacious", "wanderlust", "xenogenesis", "yearning", "zenith", "aurora", "bountiful",
-  "charisma", "destiny", "euphoria", "fascinate", "glorious", "halcyon", "idyllic", "jovial",
-  "kindred", "luminous", "melody", "nostalgia", "overture", "panorama", "quintessence", "rhapsody",
-  "sublime", "timeless", "unison", "vivid", "whirlwind", "xenophobic", "yonder", "zephyr",
-  "arcadia", "bliss", "celestial", "daydream", "effervescent", "fable", "golden", "haven", "incantation",
-  "jubilation", "kismet", "labyrinthine", "mystical", "noble", "oracle", "paradox", "quasar",
-  "reverie", "sonnet", "talisman", "utmost", "verve", "wistful", "xylophonist", "yesteryear", "zen"
-];
+let words = [];
 
 // listens for key presses, starts the test after recognizes the first key press
 document.addEventListener('keydown', (event) => {
@@ -42,7 +20,7 @@ document.addEventListener('keydown', (event) => {
 });
 
 // occupy the <main> with the visual text box
-occupyVisuals(test);
+occupyVisuals(words);
 
 /**
  * This is used when a letter is pressed
@@ -158,15 +136,40 @@ function toggleCorrect(letter) {
 
 /**
  * Occupies the text visualizer with words 
- * @param {string[]} words A string array of words used for the test 
 */
-function occupyVisuals(words) {
+async function occupyVisuals() {
+    const length4 = await fetchData(4);
+    const length5 = await fetchData(5);
+    words.push(...length4, ...length5);
+    shuffle(words);
+
     let word;
     for (let i = 0; i < words.length; i++) {
         word = words[i];
         displayWord(word, i);
     }
 }
+
+function fetchData(wordLength) {
+    return fetch(`https://random-word-api.vercel.app/api?words=100&length=${wordLength}`)
+        .then(response => response.json());
+}
+
+function shuffle(array) {                                         
+  let currentIndex = array.length;                                
+                                                                  
+  // While there remain elements to shuffle...                    
+  while (currentIndex != 0) {                                     
+                                                                  
+    // Pick a remaining element...                                
+    let randomIndex = Math.floor(Math.random() * currentIndex);   
+    currentIndex--;                                               
+                                                                  
+    // And swap it with the current element.                      
+    [array[currentIndex], array[randomIndex]] = [                 
+      array[randomIndex], array[currentIndex]];                   
+  }                                                               
+}                                                                 
 
 /**
  * Displays word in text visualizer
