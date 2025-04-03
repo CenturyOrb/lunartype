@@ -13,8 +13,9 @@ window.addEventListener('keydown', function(e) {
     }
 });
 
-visualizer.addEventListener("wheel", (event) => {
-  event.preventDefault(); 
+window.addEventListener("wheel", (event) => {
+    console.log('hi');
+    event.preventDefault(); 
 }, { passive: false });
 
 // listens for key presses, starts the test after recognizes the first key press
