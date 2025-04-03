@@ -14,7 +14,6 @@ window.addEventListener('keydown', function(e) {
 });
 
 window.addEventListener("wheel", (event) => {
-    console.log('hi');
     event.preventDefault(); 
 }, { passive: false });
 
