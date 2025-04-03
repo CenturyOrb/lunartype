@@ -7,6 +7,18 @@ const results = document.querySelector('#results');
 
 let words = [];
 
+window.addEventListener('keydown', function(e) {
+    console.log(e.target);
+    console.log(e.key);
+    if (['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', ' '].includes(event.key) && document.body == e.target)    { 
+        e.preventDefault();
+    }
+});
+
+visualizer.addEventListener("wheel", (event) => {
+  event.preventDefault(); // Prevent scrolling with wheel/touchpad
+}, { passive: false });
+
 // listens for key presses, starts the test after recognizes the first key press
 document.addEventListener('keydown', (event) => {
     if (!time) startTimer()
