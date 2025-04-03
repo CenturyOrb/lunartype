@@ -61,6 +61,7 @@ function backspacePress(activeWord) {
     // (3) user pressing backspace on empty input
     else if (activeWord.firstChild === currentLetterNode(activeWord)) {
         const previousWord = activeWord.previousSibling;
+        if (!previousWord) return;
         const error = Array.from(previousWord.childNodes).some((letter) => {
             return letter.classList.contains('incorrect') || letter.classList.contains('extra');
         });

@@ -94,7 +94,7 @@ footer {
 .letter {
     font-family: 'Source Code Pro';
     display: inline-block;
-    font-size: 1.5rem;
+    font-size: 3.7vh;
     color: var(--purple-accent); 
     text-align: center;
 }
@@ -103,7 +103,7 @@ footer {
     display: inline-block;
     margin-left: 0.5rem;
     margin-right: 0.5rem;
-    line-height: 2.7rem;
+    height: 33%;
 }
 
 /* active word that the cursor is in */
